@@ -80,7 +80,10 @@ function isValidPhoneNumber(phone: string): boolean {
   return /^09\d{9}$/.test(phone);
 }
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "*",
+  credentials: true,
+}));
 app.use(express.json());
 
 // Auth routes
@@ -3257,15 +3260,14 @@ app.post("/api/donor/register", async (req: Request, res: Response) => {
   }
 });
 
-const HOST = process.env.HOST || '127.0.0.1';
 const PORT = Number(process.env.PORT) || 4000;
 server
-  .listen(PORT, HOST, () => {
-    console.log(`🚀 Server running at http://${HOST}:${PORT}`);
+  .listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   })
   .on('error', (err: NodeJS.ErrnoException) => {
     if (err.code === 'EACCES') {
-      console.error(`Permission denied binding to ${HOST}:${PORT}. Try a different PORT or set HOST=127.0.0.1`);
+      console.error(`Permission denied binding to port ${PORT}. Try a different PORT.`);
     } else if (err.code === 'EADDRINUSE') {
       console.error(`Port ${PORT} is already in use. Set a different PORT or stop the other process.`);
     } else {
