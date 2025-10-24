@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Header</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #007BFF;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Desktop Navigation */
+        .nav-desktop {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-desktop a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-desktop a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            z-index: 1002;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-mobile {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .nav-mobile li {
+            margin: 0;
+        }
+
+        .nav-mobile a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 15px 20px;
+            transition: background-color 0.3s ease;
+            border-right: 3px solid transparent;
+        }
+
+        .nav-mobile a:hover {
+            background-color: #f8f9fa;
+            border-right-color: #007BFF;
+        }
+
+        /* Content to demonstrate header */
+        .main-content {
+            margin-top: 70px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .content-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 15px;
+            }
+
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 280px;
+            }
+
+            .header-container {
+                height: 60px;
+            }
+
+            .main-content {
+                margin-top: 60px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">روبیتیک</a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="nav-desktop">
+                <ul>
+                    <li><a href="/">خانه</a></li>
+                    <li><a href="/about">درباره ما</a></li>
+                    <li><a href="/programs">برنامه‌ها</a></li>
+                    <li><a href="/contact">تماس با ما</a></li>
+                </ul>
+            </nav>
+
+            <!-- Hamburger Button -->
+            <button class="hamburger" id="hamburgerBtn">☰</button>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Mobile Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">منو</h3>
+            <button class="close-btn" id="closeBtn">×</button>
+        </div>
+        <nav class="nav-mobile">
+            <ul>
+                <li><a href="/">خانه</a></li>
+                <li><a href="/about">درباره ما</a></li>
+                <li><a href="/programs">برنامه‌ها</a></li>
+                <li><a href="/contact">تماس با ما</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-section">
+            <h2>صفحه اصلی</h2>
+            <p>این یک نمونه از هدر ریسپانسیو است که با HTML، CSS و JavaScript خالص ساخته شده است.</p>
+            <p>در دسکتاپ، منوی ناوبری به صورت افقی نمایش داده می‌شود و در موبایل و تبلت، منوی همبرگر نمایش داده می‌شود.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>ویژگی‌های هدر</h2>
+            <p>• طراحی ریسپانسیو با استفاده از Media Queries</p>
+            <p>• انیمیشن نرم برای منوی موبایل</p>
+            <p>• پشتیبانی از RTL برای متن‌های فارسی</p>
+            <p>• بسته شدن منو با کلیک خارج از آن</p>
+            <p>• رنگ آبی مدرن (#007BFF)</p>
+        </div>
+
+        <div class="content-section">
+            <h2>تست ریسپانسیو</h2>
+            <p>برای تست عملکرد ریسپانسیو، اندازه پنجره مرورگر را تغییر دهید:</p>
+            <p>• عرض بیشتر از 768px: منوی دسکتاپ نمایش داده می‌شود</p>
+            <p>• عرض کمتر از 768px: دکمه همبرگر نمایش داده می‌شود</p>
+        </div>
+    </main>
+
+    <script>
+        // Get DOM elements
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Toggle sidebar function
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        // Close sidebar function
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        }
+
+        // Event listeners
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        closeBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar when clicking on navigation links
+        const mobileNavLinks = document.querySelectorAll('.nav-mobile a');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        // Close sidebar on window resize (optional)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+
+        // Prevent body scroll when sidebar is open
+        function toggleBodyScroll() {
+            if (sidebar.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Update body scroll when sidebar state changes
+        const observer = new MutationObserver(toggleBodyScroll);
+        observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+    </script>
+</body>
+</html>
+

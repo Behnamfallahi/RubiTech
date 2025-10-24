@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap');
+@import url('react-multi-date-picker/styles/backgrounds/bg-dark.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Vazir', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  direction: rtl;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Mobile: ensure hamburger button is clearly visible against background */
+@media (max-width: 768px) {
+  header button[aria-label="منو"] {
+    color: #111827; /* sets currentColor for SVG stroke */
+  }
+
+  header button[aria-label="منو"]:hover {
+    color: #1f2937;
+  }
+}
+
+/* Panel mobile headers: ensure hamburger icon/text is contrasting */
+@media (max-width: 1024px) {
+  /* Student & Ambassador mobile toggle (text icon inside blue button) */
+  .min-h-screen.bg-gray-100 header.md\:hidden > button {
+    color: #181818;
+  }
+
+  /* Generic hamburger toggles used in panels on light backgrounds */
+  .hamburger,
+  .menu-toggle,
+  #hamburger-btn,
+  .navbar-toggle,
+  #menu-toggle,
+  .hamburger span,
+  .menu-toggle span,
+  #hamburger-btn span,
+  .navbar-toggle span,
+  #menu-toggle span,
+  .bar,
+  .hamburger::before,
+  .hamburger::after,
+  .menu-toggle::before,
+  .menu-toggle::after,
+  #hamburger-btn::before,
+  #hamburger-btn::after,
+  .navbar-toggle::before,
+  .navbar-toggle::after,
+  #menu-toggle::before,
+  #menu-toggle::after,
+  .bar::before,
+  .bar::after {
+    color: #212529;
+  }
+}
+
+/* Touch-friendly tap targets */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active state for buttons on mobile */
+.active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+.active\:scale-98:active {
+  transform: scale(0.98);
+}
+
+/* Custom styles for leaflet map - responsive */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  min-height: 300px;
+}
+
+/* RTL support for components */
+.rtl {
+  direction: rtl;
+}
+
+/* Smooth scrolling for mobile */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive table improvements */
+@media (max-width: 640px) {
+  table {
+    font-size: 0.875rem;
+  }
+}
+
+/* Modal scroll improvements for mobile */
+@media (max-width: 768px) {
+  .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
+
+/* Prevent zoom on input focus (iOS) */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}

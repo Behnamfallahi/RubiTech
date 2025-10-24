@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  AMBASSADOR
+  DONOR
+  STUDENT
+}
+
+enum DonationType {
+  LAPTOP
+  TEACHING
+  MONEY
+}
+
+enum UserStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id                 Int        @id @default(autoincrement())
+  name               String?
+  email              String?    @unique
+  password           String
+  role               Role       @default(AMBASSADOR)
+  createdAt          DateTime   @default(now())
+  status             UserStatus @default(PENDING)
+  otp                String?
+  otpExpiry          DateTime?
+  phoneNumber        String?    @unique
+  familyName         String?
+  nationalId         String?    @unique
+  birthDate          DateTime?
+  city               String?
+  region             String?
+  location           String?
+  teachingAreas      String[]   @default([])
+  contracts          Contract[]
+  donations          Donation[]
+  introducedStudents Student[]
+}
+
+model Student {
+  id                 Int        @id @default(autoincrement())
+  name               String
+  email              String?    @unique
+  password           String?
+  fatherName         String?
+  nationalId         String?    @unique
+  birthDate          DateTime?
+  city               String?
+  region             String?
+  location           String
+  phoneNumber        String?    @unique
+  introducedByUserId Int?
+  introducedBy       User?      @relation(fields: [introducedByUserId], references: [id])
+  laptops            Laptop[]
+  donations          Donation[]
+  createdAt          DateTime   @default(now())
+}
+
+model Laptop {
+  id             Int      @id @default(autoincrement())
+  studentId      Int?
+  serialNumber   String   @unique
+  laptopName     String
+  model          String?
+  modemSerial    String?
+  hard           String?
+  ram            String?
+  propertyLabel  String?
+  skin           String?
+  shablon        String?
+  mouse          String?
+  backpack       String?
+  batteryType    String?
+  charger1       String?
+  charger2       String?
+  powerCable1    String?
+  powerCable2    String?
+  batteryStatus  String?
+  keyboardLabel  String?
+  reportLink     String?
+  dataByDirector String?
+  trackingNumber String?
+  biosPassword   String?
+  guarantee      String?
+  locationLat    Float?
+  locationLng    Float?
+  status         String   @default("ASSIGNED")
+  createdAt      DateTime @default(now())
+
+  student   Student?   @relation(fields: [studentId], references: [id])
+  contracts Contract[]
+
+  // 👇 این سمت فقط اسم رابطه رو نگه می‌داریم
+  donation Donation?
+}
+
+model Contract {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  laptopId        Int?
+  signatureBase64 String?
+  pdfUrl          String?
+  signedAt        DateTime?
+
+  user   User    @relation(fields: [userId], references: [id])
+  laptop Laptop? @relation(fields: [laptopId], references: [id])
+}
+
+model Donation {
+  id              Int          @id @default(autoincrement())
+  userId          Int
+  type            DonationType
+  laptopId        Int?         @unique
+  studentId       Int?
+  amount          Float?
+  experienceField String?
+  details         String?
+  createdAt       DateTime     @default(now())
+
+  user    User     @relation(fields: [userId], references: [id])
+  student Student? @relation(fields: [studentId], references: [id])
+
+  // 👇 این سمت کلید خارجی داره
+  laptop   Laptop?   @relation(fields: [laptopId], references: [id])
+  payments Payment[]
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Payment {
+  id         Int           @id @default(autoincrement())
+  donationId Int
+  status     PaymentStatus @default(PENDING)
+  authority  String
+  amount     Float
+  createdAt  DateTime      @default(now())
+
+  donation Donation @relation(fields: [donationId], references: [id])
+}

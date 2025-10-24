@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Test</title>
+</head>
+<body>
+  <script>
+    let ws;
+    function connectWebSocket() {
+      ws = new WebSocket('ws://localhost:4000');
+      ws.onopen = () => console.log('Connected');
+      ws.onmessage = (event) => console.log('Message:', event.data);
+      ws.onclose = () => console.log('Disconnected');
+    }
+    connectWebSocket();
+  </script>
+</body>
+</html>
