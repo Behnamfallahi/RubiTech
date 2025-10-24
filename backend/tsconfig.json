@@ -3,12 +3,12 @@
     "target": "ES2020",
     "module": "commonjs",
     "outDir": "dist",
-    "rootDir": ".", // تغییر از "src" به "."
+    "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
-  "include": ["src/**/*", "*.ts"], // فایل‌های .ts در ریشه پروژه رو هم شامل می‌شه
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
